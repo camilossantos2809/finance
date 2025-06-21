@@ -8,6 +8,8 @@ fun main() = application {
         onCloseRequest = ::exitApplication,
         title = "finance",
     ) {
-        App()
+        AppTheme {
+            App()
+        }
     }
 }
