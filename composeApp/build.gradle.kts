@@ -1,10 +1,12 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
+    kotlin("plugin.serialization") version "2.2.0"
 }
 
 kotlin {
@@ -22,6 +24,10 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtimeCompose)
+            implementation(libs.exposed.core)
+            implementation(libs.exposed.jdbc)
+            implementation("org.postgresql:postgresql:42.7.1")
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

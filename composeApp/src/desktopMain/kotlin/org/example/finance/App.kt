@@ -47,7 +47,8 @@ fun App() {
                 { value -> viewModel.updateDescription(value) },
                 label = { Text("Description 2") })
         }
-        Button(onClick = { println("ok") }) {
+        Text("Version: ${viewModel.version.collectAsState().value}", fontSize = 12.sp)
+        Button(onClick = { viewModel.onPressSave() }) {
             Text("Save")
         }
     }
