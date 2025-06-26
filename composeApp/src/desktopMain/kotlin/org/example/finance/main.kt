@@ -11,7 +11,7 @@ fun main() {
             title = "finance",
         ) {
             AppTheme {
-                App()
+                NavigationRoutes()
             }
         }
     }

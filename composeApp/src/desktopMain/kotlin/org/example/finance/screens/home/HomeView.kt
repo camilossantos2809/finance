@@ -1,4 +1,5 @@
-package org.example.finance
+package org.example.finance.screens.home
+
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -6,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,8 +25,8 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
-fun App() {
-    val viewModel = remember { AppViewModel() }
+fun HomeView() {
+    val viewModel = remember { HomeViewModel() }
     val formData by viewModel.formData.collectAsState()
 
     Column(

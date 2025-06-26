@@ -1,4 +1,4 @@
-package org.example.finance
+package org.example.finance.screens.home
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,7 +8,7 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 data class Input(val description: String="")
 
-class AppViewModel : ViewModel() {
+class HomeViewModel : ViewModel() {
     private val _formData = MutableStateFlow(Input())
     val formData get() = _formData.asStateFlow()
     val version = MutableStateFlow("")
