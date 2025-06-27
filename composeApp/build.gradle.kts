@@ -29,6 +29,7 @@ kotlin {
             implementation("org.postgresql:postgresql:42.7.1")
             implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
             implementation("org.jetbrains.androidx.navigation:navigation-compose:2.9.0-beta03")
+            implementation(compose.materialIconsExtended)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
