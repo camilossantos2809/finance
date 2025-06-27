@@ -2,54 +2,49 @@ package org.example.finance.screens.home
 
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.material3.Button
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import org.example.finance.LocalNavController
+import org.example.finance.Screen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 
 @Composable
 @Preview
 fun HomeView() {
-    val viewModel = remember { HomeViewModel() }
-    val formData by viewModel.formData.collectAsState()
+    val navController = LocalNavController.current
 
     Column(
-        modifier = Modifier.safeContentPadding().fillMaxSize().background(color = Color(40, 40, 40)).padding(12.dp),
+        modifier = Modifier.safeContentPadding().fillMaxSize().background(color = Color(122, 122, 122)).padding(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Column{
-            Text("New Wallet", style = MaterialTheme.typography.titleLarge)
+        Card(onClick = { navController.navigate(Screen.CompanyList.route) }) {
+            Text("Companies", style = MaterialTheme.typography.titleLarge)
         }
-        Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            TextField(
-                formData.description,
-                { value -> viewModel.updateDescription(value) },
-                label = { Text("Description") })
-            TextField(
-                formData.description,
-                { value -> viewModel.updateDescription(value) },
-                label = { Text("Description 2") })
+        Card(onClick = { navController.navigate(Screen.WalletList.route) }) {
+            Text("Wallets", style = MaterialTheme.typography.titleLarge)
         }
-        Text("Version: ${viewModel.version.collectAsState().value}", fontSize = 12.sp)
-        Button(onClick = { viewModel.onPressSave() }) {
-            Text("Save")
-        }
+    }
+}
+
+@Composable
+fun Card(onClick: () -> Unit, content: @Composable () -> Unit) {
+    Column(
+        modifier = Modifier.clickable(onClick = onClick)
+            .border(width = 1.dp, color = Color.DarkGray, shape = RoundedCornerShape(8.dp))
+            .background(color = Color.White, shape = RoundedCornerShape(8.dp))
+            .padding(16.dp),
+    ) {
+        content()
     }
 }

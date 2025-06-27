@@ -1,26 +1,35 @@
 package org.example.finance
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
+import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import kotlinx.serialization.Serializable
+import org.example.finance.screens.company.CompanyListView
 import org.example.finance.screens.home.HomeView
 
-@Serializable
-object Home
+sealed class Screen(val route: String) {
+    object Home : Screen("home")
+    object WalletList : Screen("walletList")
+    object CompanyList : Screen("companyList")
+}
 
-@Serializable
-object WalletList
 
-@Serializable
-object WalletForm
+val LocalNavController = compositionLocalOf<NavController> {
+    error("No NavController provided")
+}
+
 
 @Composable
 fun NavigationRoutes() {
     val navController = rememberNavController()
-
-    NavHost(navController = navController, startDestination = Home) {
-        composable<Home> { HomeView() }
+    CompositionLocalProvider(LocalNavController provides navController) {
+        NavHost(navController = navController, startDestination = Screen.Home.route) {
+            composable(Screen.Home.route) { HomeView() }
+            composable(Screen.WalletList.route) { }
+            composable(Screen.CompanyList.route) { CompanyListView() }
+        }
     }
 }
