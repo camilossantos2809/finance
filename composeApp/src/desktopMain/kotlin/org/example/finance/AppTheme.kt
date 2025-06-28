@@ -50,7 +50,12 @@ fun AppTheme(
         titleLarge = TextStyle(
             fontFamily = fontFamily,
             fontWeight = FontWeight.Bold,
-            fontSize = 20.sp
+            fontSize = 24.sp
+        ),
+        titleMedium = TextStyle(
+            fontFamily = fontFamily,
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp
         )
     )
     val shapes = Shapes(

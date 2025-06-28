@@ -2,28 +2,27 @@ package org.example.finance.screens.home
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+import org.example.finance.services.database.Wallet
+import org.jetbrains.exposed.v1.core.ResultRow
 
-data class Input(val description: String="")
+data class WalletListItem(val id: Int, val description: String)
+
+fun ResultRow.toWalletListItem() = WalletListItem(
+    id = this[Wallet.id].value,
+    description = this[Wallet.description]
+)
 
 class HomeViewModel : ViewModel() {
-    private val _formData = MutableStateFlow(Input())
-    val formData get() = _formData.asStateFlow()
-    val version = MutableStateFlow("")
 
-    fun updateDescription(newValue: String) {
-        _formData.update { it.copy(description = newValue) }
-    }
+    val wallets = MutableStateFlow(emptyList<WalletListItem>().toMutableList())
 
-    fun onPressSave(){
+    init {
         transaction {
-            val versionDB = exec("select version()"){ result ->
-                result.next()
-                result.getString(1)
-            }
-            version.value = versionDB?:""
+            Wallet.selectAll().forEach { wallets.value.add(it.toWalletListItem()) }
         }
     }
+
+
 }

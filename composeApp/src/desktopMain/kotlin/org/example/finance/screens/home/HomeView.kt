@@ -5,10 +5,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,17 +25,23 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 @Preview
 fun HomeView() {
     val navController = LocalNavController.current
+    val viewModel = remember { HomeViewModel() }
 
     Column(
         modifier = Modifier.safeContentPadding().fillMaxSize().background(color = Color(122, 122, 122)).padding(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+        Text("Wallets", style = MaterialTheme.typography.titleLarge)
+        LazyColumn {
+            items(viewModel.wallets.value) { item ->
+                Card(onClick = { navController.navigate(Screen.WalletList.route) }) {
+                    Text(item.description, style = MaterialTheme.typography.titleMedium)
+                }
+            }
+        }
         Card(onClick = { navController.navigate(Screen.CompanyList.route) }) {
             Text("Companies", style = MaterialTheme.typography.titleLarge)
-        }
-        Card(onClick = { navController.navigate(Screen.WalletList.route) }) {
-            Text("Wallets", style = MaterialTheme.typography.titleLarge)
         }
     }
 }
