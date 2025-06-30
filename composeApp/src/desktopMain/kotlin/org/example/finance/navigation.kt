@@ -7,14 +7,23 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
+import kotlinx.serialization.Serializable
 import org.example.finance.screens.company.CompanyListView
 import org.example.finance.screens.home.HomeView
+import org.example.finance.screens.operation.OperationListView
 
-sealed class Screen(val route: String) {
-    object Home : Screen("home")
-    object WalletList : Screen("walletList")
-    object CompanyList : Screen("companyList")
-}
+@Serializable
+object Home
+
+@Serializable
+object WalletList
+
+@Serializable
+object CompanyList
+
+@Serializable
+data class OperationsList(val stockId: String)
 
 
 val LocalNavController = compositionLocalOf<NavController> {
@@ -26,10 +35,14 @@ val LocalNavController = compositionLocalOf<NavController> {
 fun NavigationRoutes() {
     val navController = rememberNavController()
     CompositionLocalProvider(LocalNavController provides navController) {
-        NavHost(navController = navController, startDestination = Screen.Home.route) {
-            composable(Screen.Home.route) { HomeView() }
-            composable(Screen.WalletList.route) { }
-            composable(Screen.CompanyList.route) { CompanyListView() }
+        NavHost(navController = navController, startDestination = Home) {
+            composable<Home> { HomeView() }
+            composable<WalletList> { }
+            composable<CompanyList> { CompanyListView() }
+            composable<OperationsList> { backStackEntry ->
+                val route: OperationsList = backStackEntry.toRoute()
+                OperationListView(route.stockId)
+            }
         }
     }
 }
