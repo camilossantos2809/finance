@@ -1,0 +1,99 @@
+package org.example.finance.screens.operation
+
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import org.example.finance.services.database.Operation
+import org.example.finance.services.database.Stock
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+import org.jetbrains.exposed.v1.jdbc.insert
+import org.jetbrains.exposed.v1.jdbc.select
+import java.math.BigDecimal
+import kotlinx.datetime.LocalDate as KxLocalDate
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
+import kotlinx.datetime.toKotlinLocalDate
+import org.jetbrains.exposed.v1.core.lowerCase
+
+fun parseDateInput(input: String): KxLocalDate? {
+    return try {
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val parsed = LocalDate.parse(input, formatter)
+        parsed.toKotlinLocalDate() // Converts java.time.LocalDate → kotlinx.datetime.LocalDate
+    } catch (e: DateTimeParseException) {
+        e.printStackTrace()
+        null
+    }
+}
+
+data class FormData(val date: TextFieldValue, val type: String, val amount: String, val price: String)
+
+class OperationViewModel : ViewModel() {
+    private val _formData = MutableStateFlow(
+        FormData(
+            type = "C", amount = "0,0", price = "0,0", date = TextFieldValue("01/07/2025")
+        )
+    )
+    val formData get() = _formData.asStateFlow()
+    val errorMessage = MutableStateFlow<String?>("")
+
+    fun onPressSaveButton(stockCode: String) {
+        try {
+            if (_formData.value.date.text.isEmpty()) {
+                errorMessage.value = "Date cannot be empty."
+                throw IllegalStateException(errorMessage.value)
+            }
+            val amountQuotes = _formData.value.amount.replace(",", ".").toBigDecimal()
+            if (amountQuotes <= BigDecimal.ZERO) {
+                throw IllegalArgumentException("Amount must be greater than zero.")
+            }
+            val priceUnit = _formData.value.price.replace(",", ".").toBigDecimal()
+            if (priceUnit <= BigDecimal.ZERO) {
+                throw IllegalArgumentException("Price must be greater than zero.")
+            }
+            val parsedDate = parseDateInput(_formData.value.date.text) ?: throw IllegalStateException("Invalid date")
+
+            transaction {
+                val stockId = Stock.select(Stock.id).where { Stock.code.lowerCase() eq stockCode.lowercase() }
+                if (stockId.empty()) throw NoSuchElementException("Stock ${stockCode.lowercase()} not found")
+
+                Operation.insert {
+                    it[Operation.date] = parsedDate
+                    it[Operation.typeId] = 1
+                    it[Operation.amount] = amountQuotes
+                    it[Operation.priceUnit] = priceUnit
+                    it[Operation.stockId] = stockId
+                }
+            }
+        } catch (e: Exception) {
+            errorMessage.value = "${e.message}"
+            e.printStackTrace()
+        }
+    }
+
+    fun onChangeDate(inputValue: TextFieldValue) {
+        _formData.value = _formData.value.copy(date = inputValue)
+    }
+
+    fun onChangeType(inputValue: String) {
+        _formData.update {
+            it.copy(type = inputValue)
+        }
+    }
+
+    fun onChangeAmount(inputValue: String) {
+        _formData.update {
+            it.copy(amount = inputValue)
+        }
+    }
+
+    fun onChangePrice(inputValue: String) {
+        _formData.update {
+            it.copy(price = inputValue)
+        }
+    }
+
+}

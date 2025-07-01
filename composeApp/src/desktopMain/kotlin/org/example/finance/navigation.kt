@@ -11,6 +11,7 @@ import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import org.example.finance.screens.company.CompanyListView
 import org.example.finance.screens.home.HomeView
+import org.example.finance.screens.operation.OperationFormView
 import org.example.finance.screens.operation.OperationListView
 
 @Serializable
@@ -24,6 +25,9 @@ object CompanyList
 
 @Serializable
 data class OperationsList(val stockId: String)
+
+@Serializable
+data class OperationForm(val stockId: String)
 
 
 val LocalNavController = compositionLocalOf<NavController> {
@@ -42,6 +46,10 @@ fun NavigationRoutes() {
             composable<OperationsList> { backStackEntry ->
                 val route: OperationsList = backStackEntry.toRoute()
                 OperationListView(route.stockId)
+            }
+            composable<OperationForm> { backStackEntry ->
+                val route: OperationForm = backStackEntry.toRoute()
+                OperationFormView(route.stockId)
             }
         }
     }

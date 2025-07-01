@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import org.example.finance.CompanyList
 import org.example.finance.LocalNavController
+import org.example.finance.OperationsList
 import org.example.finance.WalletList
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -53,11 +54,10 @@ fun HomeView() {
                 value = companySearch,
                 onValueChange = { companySearch = it },
                 label = { Text("Search company by stock") })
-            Button(onClick = {}) {
+            Button(onClick = { navController.navigate(OperationsList(companySearch.text)) }) {
                 Text("Search")
             }
         }
-
         Card(onClick = { navController.navigate(CompanyList) }) {
             Text("Companies", style = MaterialTheme.typography.titleLarge)
         }
