@@ -16,7 +16,9 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import kotlinx.datetime.toKotlinLocalDate
+import org.jetbrains.exposed.v1.core.SortOrder
 import org.jetbrains.exposed.v1.core.lowerCase
+import org.jetbrains.exposed.v1.jdbc.selectAll
 
 fun parseDateInput(input: String): KxLocalDate? {
     return try {
@@ -31,6 +33,14 @@ fun parseDateInput(input: String): KxLocalDate? {
 
 data class FormData(val date: TextFieldValue, val type: String, val amount: String, val price: String)
 
+data class OperationListItem(
+    val id: Int,
+    val date: KxLocalDate,
+    val type: String,
+    val amount: BigDecimal,
+    val price: BigDecimal
+)
+
 class OperationViewModel : ViewModel() {
     private val _formData = MutableStateFlow(
         FormData(
@@ -39,6 +49,34 @@ class OperationViewModel : ViewModel() {
     )
     val formData get() = _formData.asStateFlow()
     val errorMessage = MutableStateFlow<String?>("")
+    val operations = MutableStateFlow<List<OperationListItem>>(emptyList())
+
+    fun fetchOperations(stockCode: String) {
+        try {
+            transaction {
+                val stockQuery = Stock.select(Stock.id).where { Stock.code.lowerCase() eq stockCode.lowercase() }
+                if (stockQuery.empty()) {
+                    operations.value= emptyList()
+                    return@transaction
+                }
+                val stockId = stockQuery.single()[Stock.id].value
+                operations.value =
+                    Operation.selectAll().where { Operation.stockId eq stockId }
+                        .orderBy(Operation.date to SortOrder.DESC).map {
+                            OperationListItem(
+                                id = it[Operation.id].value,
+                                date = it[Operation.date],
+                                type = it[Operation.typeId].value.toString(),
+                                amount = it[Operation.amount],
+                                price = it[Operation.priceUnit]
+                            )
+                        }
+            }
+        } catch (e: Exception) {
+            errorMessage.value = "${e.message}"
+            e.printStackTrace()
+        }
+    }
 
     fun onPressSaveButton(stockCode: String) {
         try {
