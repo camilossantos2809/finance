@@ -6,18 +6,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import org.example.finance.services.database.Operation
-import org.example.finance.services.database.Stock
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import org.jetbrains.exposed.v1.jdbc.insert
-import org.jetbrains.exposed.v1.jdbc.select
 import java.math.BigDecimal
 import kotlinx.datetime.LocalDate as KxLocalDate
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 import kotlinx.datetime.toKotlinLocalDate
+import org.example.finance.screens.SharedState
 import org.jetbrains.exposed.v1.core.SortOrder
-import org.jetbrains.exposed.v1.core.lowerCase
 import org.jetbrains.exposed.v1.jdbc.selectAll
 
 fun parseDateInput(input: String): KxLocalDate? {
@@ -54,12 +52,7 @@ class OperationViewModel : ViewModel() {
     fun fetchOperations(stockCode: String) {
         try {
             transaction {
-                val stockQuery = Stock.select(Stock.id).where { Stock.code.lowerCase() eq stockCode.lowercase() }
-                if (stockQuery.empty()) {
-                    operations.value= emptyList()
-                    return@transaction
-                }
-                val stockId = stockQuery.single()[Stock.id].value
+                val stockId = SharedState.selectedStock?.id
                 operations.value =
                     Operation.selectAll().where { Operation.stockId eq stockId }
                         .orderBy(Operation.date to SortOrder.DESC).map {
@@ -93,17 +86,15 @@ class OperationViewModel : ViewModel() {
                 throw IllegalArgumentException("Price must be greater than zero.")
             }
             val parsedDate = parseDateInput(_formData.value.date.text) ?: throw IllegalStateException("Invalid date")
+            val stock = SharedState.selectedStock?.id ?: throw IllegalStateException("Stock not selected")
 
             transaction {
-                val stockId = Stock.select(Stock.id).where { Stock.code.lowerCase() eq stockCode.lowercase() }
-                if (stockId.empty()) throw NoSuchElementException("Stock ${stockCode.lowercase()} not found")
-
                 Operation.insert {
                     it[Operation.date] = parsedDate
                     it[Operation.typeId] = 1
                     it[Operation.amount] = amountQuotes
                     it[Operation.priceUnit] = priceUnit
-                    it[Operation.stockId] = stockId
+                    it[Operation.stockId] = stock
                 }
             }
         } catch (e: Exception) {

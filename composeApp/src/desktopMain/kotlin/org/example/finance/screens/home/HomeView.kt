@@ -13,19 +13,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import org.example.finance.CompanyList
 import org.example.finance.LocalNavController
-import org.example.finance.OperationsList
 import org.example.finance.WalletList
+import org.example.finance.screens.SharedState
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 
@@ -34,10 +33,10 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 fun HomeView() {
     val navController = LocalNavController.current
     val viewModel = remember { HomeViewModel() }
-    var companySearch by remember { mutableStateOf(TextFieldValue("")) }
+    val errorMessage by viewModel.errorMessage.collectAsState()
 
     Column(
-        modifier = Modifier.safeContentPadding().fillMaxSize().background(color = Color(122, 122, 122)).padding(12.dp),
+        modifier = Modifier.safeContentPadding().fillMaxSize().padding(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -51,16 +50,18 @@ fun HomeView() {
         }
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
             TextField(
-                value = companySearch,
-                onValueChange = { companySearch = it },
-                label = { Text("Search company by stock") })
-            Button(onClick = { navController.navigate(OperationsList(companySearch.text)) }) {
+                value = SharedState.companySearch,
+                onValueChange = { SharedState.companySearch = it },
+                label = { Text("Search company by stock") },
+            )
+            Button(onClick = { viewModel.onPressSearch(navController) }) {
                 Text("Search")
             }
         }
         Card(onClick = { navController.navigate(CompanyList) }) {
             Text("Companies", style = MaterialTheme.typography.titleLarge)
         }
+        Text(errorMessage ?: "", style = TextStyle(color = Color.Red))
     }
 }
 
