@@ -23,9 +23,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import org.example.finance.LocalNavController
 import org.example.finance.OperationForm
 import org.example.finance.WalletList
+import org.example.finance.screens.SharedState
 
 @Composable
-fun OperationListView(stockId: String) {
+fun OperationListView() {
     val navController = LocalNavController.current
     val viewModel = remember { OperationViewModel() }
     val operations by viewModel.operations.collectAsState()
@@ -36,7 +37,7 @@ fun OperationListView(stockId: String) {
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
                 Lifecycle.Event.ON_RESUME -> {
-                    viewModel.fetchOperations(stockId)
+                    viewModel.fetchOperations()
                 }
 
                 else -> Unit
@@ -61,7 +62,14 @@ fun OperationListView(stockId: String) {
                 Icon(imageVector = Icons.Filled.Refresh, contentDescription = "Refresh")
             }
         }
-        Text(stockId, style = MaterialTheme.typography.titleLarge)
+        Text(
+            "${SharedState.selectedStock?.code} - ${SharedState.selectedStock?.companyName}",
+            style = MaterialTheme.typography.titleLarge
+        )
+        Button(onClick = { navController.navigate(OperationForm) }) {
+            Icon(imageVector = Icons.Filled.Add, contentDescription = "Add operation")
+            Text("Add Operation")
+        }
         LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             items(operations) { item ->
                 CardRow(onClick = { navController.navigate(WalletList) }) {
@@ -72,10 +80,6 @@ fun OperationListView(stockId: String) {
                     Text(item.price.toString(), style = MaterialTheme.typography.bodyMedium)
                 }
             }
-        }
-        Button(onClick = { navController.navigate(OperationForm(stockId)) }) {
-            Icon(imageVector = Icons.Filled.Add, contentDescription = "Add operation")
-            Text("Add Operation")
         }
     }
 }

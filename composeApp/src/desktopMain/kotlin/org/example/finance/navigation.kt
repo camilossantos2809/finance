@@ -7,7 +7,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import org.example.finance.screens.company.CompanyListView
 import org.example.finance.screens.home.HomeView
@@ -24,16 +23,14 @@ object WalletList
 object CompanyList
 
 @Serializable
-data class OperationsList(val stockId: String)
+object OperationsList
 
 @Serializable
-data class OperationForm(val stockId: String)
-
+object OperationForm
 
 val LocalNavController = compositionLocalOf<NavController> {
     error("No NavController provided")
 }
-
 
 @Composable
 fun NavigationRoutes() {
@@ -43,14 +40,8 @@ fun NavigationRoutes() {
             composable<Home> { HomeView() }
             composable<WalletList> { }
             composable<CompanyList> { CompanyListView() }
-            composable<OperationsList> { backStackEntry ->
-                val route: OperationsList = backStackEntry.toRoute()
-                OperationListView(route.stockId)
-            }
-            composable<OperationForm> { backStackEntry ->
-                val route: OperationForm = backStackEntry.toRoute()
-                OperationFormView(route.stockId)
-            }
+            composable<OperationsList> { OperationListView() }
+            composable<OperationForm> { OperationFormView() }
         }
     }
 }

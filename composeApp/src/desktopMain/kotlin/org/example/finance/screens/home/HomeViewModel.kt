@@ -29,7 +29,7 @@ class HomeViewModel : ViewModel() {
     fun onPressSearch(navController: NavController) {
         try {
             SharedState.selectStock()
-            navController.navigate(OperationsList(SharedState.companySearch.text))
+            navController.navigate(OperationsList)
         } catch (e: Exception) {
             errorMessage.value = "${e.message}"
             e.printStackTrace()

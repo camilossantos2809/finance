@@ -2,6 +2,7 @@ package org.example.finance.screens.operation
 
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -49,7 +50,7 @@ class OperationViewModel : ViewModel() {
     val errorMessage = MutableStateFlow<String?>("")
     val operations = MutableStateFlow<List<OperationListItem>>(emptyList())
 
-    fun fetchOperations(stockCode: String) {
+    fun fetchOperations() {
         try {
             transaction {
                 val stockId = SharedState.selectedStock?.id
@@ -71,7 +72,7 @@ class OperationViewModel : ViewModel() {
         }
     }
 
-    fun onPressSaveButton(stockCode: String) {
+    fun onPressSaveButton(navController: NavController) {
         try {
             if (_formData.value.date.text.isEmpty()) {
                 errorMessage.value = "Date cannot be empty."
@@ -97,6 +98,8 @@ class OperationViewModel : ViewModel() {
                     it[Operation.stockId] = stock
                 }
             }
+            navController.popBackStack()
+            errorMessage.value = null
         } catch (e: Exception) {
             errorMessage.value = "${e.message}"
             e.printStackTrace()

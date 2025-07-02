@@ -40,6 +40,22 @@ fun HomeView() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            TextField(
+                value = SharedState.companySearch,
+                onValueChange = { SharedState.companySearch = it },
+                label = { Text("Search company by stock") },
+                isError = !(errorMessage?.isEmpty())!!,
+                supportingText = { Text(errorMessage ?: "", style = TextStyle(color = Color.Red)) }
+            )
+            Button(onClick = { viewModel.onPressSearch(navController) }) {
+                Text("Search")
+            }
+        }
         Text("Wallets", style = MaterialTheme.typography.titleLarge)
         LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(viewModel.wallets.value) { item ->
@@ -48,20 +64,9 @@ fun HomeView() {
                 }
             }
         }
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            TextField(
-                value = SharedState.companySearch,
-                onValueChange = { SharedState.companySearch = it },
-                label = { Text("Search company by stock") },
-            )
-            Button(onClick = { viewModel.onPressSearch(navController) }) {
-                Text("Search")
-            }
-        }
         Card(onClick = { navController.navigate(CompanyList) }) {
             Text("Companies", style = MaterialTheme.typography.titleLarge)
         }
-        Text(errorMessage ?: "", style = TextStyle(color = Color.Red))
     }
 }
 
