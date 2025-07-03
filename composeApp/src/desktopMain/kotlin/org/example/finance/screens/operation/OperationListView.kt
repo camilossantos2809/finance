@@ -21,7 +21,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.compose.currentBackStackEntryAsState
 import org.example.finance.LocalNavController
-import org.example.finance.OperationForm
 import org.example.finance.WalletList
 import org.example.finance.screens.SharedState
 
@@ -66,7 +65,7 @@ fun OperationListView() {
             "${SharedState.selectedStock?.code} - ${SharedState.selectedStock?.companyName}",
             style = MaterialTheme.typography.titleLarge
         )
-        Button(onClick = { navController.navigate(OperationForm) }) {
+        Button(onClick = { viewModel.onPressAddOperation(navController) }) {
             Icon(imageVector = Icons.Filled.Add, contentDescription = "Add operation")
             Text("Add Operation")
         }

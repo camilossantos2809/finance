@@ -6,18 +6,23 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.datetime.toKotlinLocalDate
+import org.example.finance.OperationForm
+import org.example.finance.screens.RadioButtonItem
+import org.example.finance.screens.SharedState
 import org.example.finance.services.database.Operation
-import org.jetbrains.exposed.v1.jdbc.transactions.transaction
+import org.example.finance.services.database.OperationType
+import org.jetbrains.exposed.v1.core.SortOrder
+import org.jetbrains.exposed.v1.core.StdOutSqlLogger
+import org.jetbrains.exposed.v1.jdbc.addLogger
 import org.jetbrains.exposed.v1.jdbc.insert
+import org.jetbrains.exposed.v1.jdbc.selectAll
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import java.math.BigDecimal
-import kotlinx.datetime.LocalDate as KxLocalDate
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
-import kotlinx.datetime.toKotlinLocalDate
-import org.example.finance.screens.SharedState
-import org.jetbrains.exposed.v1.core.SortOrder
-import org.jetbrains.exposed.v1.jdbc.selectAll
+import kotlinx.datetime.LocalDate as KxLocalDate
 
 fun parseDateInput(input: String): KxLocalDate? {
     return try {
@@ -104,6 +109,25 @@ class OperationViewModel : ViewModel() {
             errorMessage.value = "${e.message}"
             e.printStackTrace()
         }
+    }
+
+    fun onPressAddOperation(navController: NavController) {
+        try {
+            transaction {
+                addLogger(StdOutSqlLogger)
+                SharedState.operationTypes.value = OperationType.selectAll().map {
+                    RadioButtonItem(
+                        id = it[OperationType.id].value,
+                        text = it[OperationType.description].replaceFirstChar { c -> c.uppercase() }
+                    )
+                }
+            }
+            navController.navigate(OperationForm)
+        } catch (e: Exception) {
+            errorMessage.value = "${e.message}"
+            e.printStackTrace()
+        }
+
     }
 
     fun onChangeDate(inputValue: TextFieldValue) {

@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.example.finance.services.database.Company
 import org.example.finance.services.database.Stock
 import org.jetbrains.exposed.v1.core.lowerCase
@@ -12,9 +13,12 @@ import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 
 data class SelectedStock(val id: Int, val code: String, val companyName: String)
 
+data class RadioButtonItem(val id: Int, val text: String)
+
 object SharedState {
     var companySearch by mutableStateOf(TextFieldValue(""))
     var selectedStock by mutableStateOf<SelectedStock?>(null)
+    val operationTypes = MutableStateFlow<List<RadioButtonItem>>(emptyList())
 
     fun getStock(stockCode: String): SelectedStock? {
         return transaction {
