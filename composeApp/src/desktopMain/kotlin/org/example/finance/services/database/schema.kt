@@ -22,7 +22,7 @@ object Stock: IntIdTable(){
     val companyId = reference("company_id", Company)
 }
 
-object OperationType: IntIdTable(){
+object OperationType: IntIdTable("operation_type"){
     val description = varchar("description", MAX_VARCHAR_LENGTH)
 }
 
