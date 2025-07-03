@@ -1,28 +1,20 @@
 package org.example.finance.screens.operation
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import org.example.finance.LocalNavController
+import org.example.finance.screens.RadioButtonItem
 import org.example.finance.screens.SharedState
 
 @Composable
@@ -38,7 +30,7 @@ fun OperationFormView() {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.CenterHorizontally, ),
+            horizontalArrangement = Arrangement.spacedBy(16.dp, alignment = Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = { navController.popBackStack() }) {
@@ -53,11 +45,7 @@ fun OperationFormView() {
             value = formData.date,
             onValueChange = { viewModel.onChangeDate(it) },
             label = { Text("Date") })
-        TextField(
-            value = viewModel.formData.value.type,
-            onValueChange = viewModel::onChangeType,
-            label = { Text("Type") }
-        )
+        RadioButtonSingleSelection(radioOptions = SharedState.operationTypes.value)
         TextField(
             value = viewModel.formData.value.amount,
             onValueChange = viewModel::onChangeAmount,
@@ -72,6 +60,36 @@ fun OperationFormView() {
             Text("Save")
         }
         Text(errorMessage ?: "", style = TextStyle(color = Color.Red))
+    }
+}
+
+@Composable
+fun RadioButtonSingleSelection(modifier: Modifier = Modifier, radioOptions: List<RadioButtonItem>) {
+    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions.firstOrNull()) }
+    Row(modifier.selectableGroup()) {
+        radioOptions.forEach { item ->
+            Row(
+                Modifier
+                    .height(56.dp)
+                    .selectable(
+                        selected = (item == selectedOption),
+                        onClick = { onOptionSelected(item) },
+                        role = Role.RadioButton
+                    )
+                    .padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                RadioButton(
+                    selected = (item == selectedOption),
+                    onClick = null
+                )
+                Text(
+                    text = item.text,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(start = 16.dp)
+                )
+            }
+        }
     }
 }
 
