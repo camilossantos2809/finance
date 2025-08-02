@@ -17,24 +17,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.finance.ui.navigation.LocalNavController
 import io.finance.ui.shared.components.card.CardRow
-import io.finance.data.repository.WalletRepository
-import io.finance.data.repository.impl.WalletRepositoryImpl
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.koinInject
+import org.koin.core.parameter.parametersOf
 
 @Composable
 @Preview
 fun WalletListView(
     walletId: Int,
-    walletRepository: WalletRepository = WalletRepositoryImpl()
 ) {
     val navController = LocalNavController.current
-    val viewModel = remember { WalletViewModel(walletRepository, walletId) }
+    val viewModel: WalletViewModel = koinInject { parametersOf(walletId) }
     val companies by viewModel.companies.collectAsState()
 
     Column(
