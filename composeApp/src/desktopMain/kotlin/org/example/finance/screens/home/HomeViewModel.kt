@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.example.finance.OperationsList
+import org.example.finance.WalletList
 import org.example.finance.screens.SharedState
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
@@ -34,7 +35,11 @@ class HomeViewModel : ViewModel() {
             errorMessage.value = "${e.message}"
             e.printStackTrace()
         }
+    }
 
+    fun onPressWallet(walletId: Int, navController: NavController) {
+        SharedState.selectWallet(walletId)
+        navController.navigate(WalletList)
     }
 
 }

@@ -12,6 +12,7 @@ import org.example.finance.screens.company.CompanyListView
 import org.example.finance.screens.home.HomeView
 import org.example.finance.screens.operation.OperationFormView
 import org.example.finance.screens.operation.OperationListView
+import org.example.finance.screens.wallet.WalletListView
 
 @Serializable
 object Home
@@ -38,7 +39,7 @@ fun NavigationRoutes() {
     CompositionLocalProvider(LocalNavController provides navController) {
         NavHost(navController = navController, startDestination = Home) {
             composable<Home> { HomeView() }
-            composable<WalletList> { }
+            composable<WalletList> { WalletListView() }
             composable<CompanyList> { CompanyListView() }
             composable<OperationsList> { OperationListView() }
             composable<OperationForm> { OperationFormView() }

@@ -21,9 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import org.example.finance.CompanyList
 import org.example.finance.LocalNavController
-import org.example.finance.WalletList
 import org.example.finance.screens.SharedState
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -50,8 +48,7 @@ fun HomeView() {
                 onValueChange = { SharedState.companySearch = it },
                 label = { Text("Search company by stock") },
                 isError = !(errorMessage?.isEmpty())!!,
-                supportingText = { Text(errorMessage ?: "", style = TextStyle(color = Color.Red)) }
-            )
+                supportingText = { Text(errorMessage ?: "", style = TextStyle(color = Color.Red)) })
             Button(onClick = { viewModel.onPressSearch(navController) }) {
                 Text("Search")
             }
@@ -59,13 +56,10 @@ fun HomeView() {
         Text("Wallets", style = MaterialTheme.typography.titleLarge)
         LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(viewModel.wallets.value) { item ->
-                Card(onClick = { navController.navigate(WalletList) }) {
+                Card(onClick = { viewModel.onPressWallet(item.id, navController) }) {
                     Text(item.description, style = MaterialTheme.typography.titleMedium)
                 }
             }
-        }
-        Card(onClick = { navController.navigate(CompanyList) }) {
-            Text("Companies", style = MaterialTheme.typography.titleLarge)
         }
     }
 }
@@ -73,11 +67,9 @@ fun HomeView() {
 @Composable
 fun Card(onClick: () -> Unit, content: @Composable () -> Unit) {
     Column(
-        modifier = Modifier.width(IntrinsicSize.Max)
-            .clickable(onClick = onClick)
+        modifier = Modifier.width(IntrinsicSize.Max).clickable(onClick = onClick)
             .border(width = 1.dp, color = Color.DarkGray, shape = RoundedCornerShape(8.dp))
-            .background(color = Color.White, shape = RoundedCornerShape(8.dp))
-            .padding(16.dp),
+            .background(color = Color.White, shape = RoundedCornerShape(8.dp)).padding(16.dp),
     ) {
         content()
     }
