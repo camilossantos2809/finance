@@ -1,8 +1,8 @@
-package org.example.finance
+package io.finance
 
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import org.example.finance.services.database.connectDatabase
+import io.finance.services.database.connectDatabase
 
 fun main() {
     connectDatabase()

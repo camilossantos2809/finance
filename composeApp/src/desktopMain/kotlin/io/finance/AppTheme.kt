@@ -1,4 +1,4 @@
-package org.example.finance
+package io.finance
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.shape.RoundedCornerShape

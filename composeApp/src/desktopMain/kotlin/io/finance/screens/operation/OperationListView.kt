@@ -1,4 +1,4 @@
-package org.example.finance.screens.operation
+package io.finance.screens.operation
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,10 +14,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.navigation.compose.currentBackStackEntryAsState
-import org.example.finance.LocalNavController
-import org.example.finance.WalletList
-import org.example.finance.components.card.CardRow
-import org.example.finance.screens.SharedState
+import io.finance.LocalNavController
+import io.finance.WalletList
+import io.finance.components.card.CardRow
+import io.finance.screens.SharedState
 
 @Composable
 fun OperationListView() {

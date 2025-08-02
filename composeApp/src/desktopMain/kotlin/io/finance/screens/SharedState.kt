@@ -1,12 +1,12 @@
-package org.example.finance.screens
+package io.finance.screens
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.TextFieldValue
 import kotlinx.coroutines.flow.MutableStateFlow
-import org.example.finance.services.database.Company
-import org.example.finance.services.database.Stock
+import io.finance.services.database.Company
+import io.finance.services.database.Stock
 import org.jetbrains.exposed.v1.core.lowerCase
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction

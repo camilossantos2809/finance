@@ -1,4 +1,4 @@
-package org.example.finance
+package io.finance
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -8,11 +8,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import kotlinx.serialization.Serializable
-import org.example.finance.screens.company.CompanyListView
-import org.example.finance.screens.home.HomeView
-import org.example.finance.screens.operation.OperationFormView
-import org.example.finance.screens.operation.OperationListView
-import org.example.finance.screens.wallet.WalletListView
+import io.finance.screens.company.CompanyListView
+import io.finance.screens.home.HomeView
+import io.finance.screens.operation.OperationFormView
+import io.finance.screens.operation.OperationListView
+import io.finance.screens.wallet.WalletListView
 
 @Serializable
 object Home

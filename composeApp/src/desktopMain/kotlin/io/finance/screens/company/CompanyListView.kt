@@ -1,4 +1,4 @@
-package org.example.finance.screens.company
+package io.finance.screens.company
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,7 +9,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import org.example.finance.LocalNavController
+import io.finance.LocalNavController
 
 @Composable
 fun CompanyListView() {

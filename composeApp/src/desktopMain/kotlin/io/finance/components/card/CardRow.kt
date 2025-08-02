@@ -1,4 +1,4 @@
-package org.example.finance.components.card
+package io.finance.components.card
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

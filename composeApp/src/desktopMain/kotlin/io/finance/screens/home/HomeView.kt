@@ -1,4 +1,4 @@
-package org.example.finance.screens.home
+package io.finance.screens.home
 
 
 import androidx.compose.foundation.background
@@ -21,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import org.example.finance.LocalNavController
-import org.example.finance.screens.SharedState
+import io.finance.LocalNavController
+import io.finance.screens.SharedState
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 

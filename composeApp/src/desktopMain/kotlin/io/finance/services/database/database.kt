@@ -1,4 +1,4 @@
-package org.example.finance.services.database
+package io.finance.services.database
 
 import org.jetbrains.exposed.v1.jdbc.Database
 import kotlinx.serialization.Serializable

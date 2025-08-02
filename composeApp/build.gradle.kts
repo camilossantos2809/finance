@@ -46,11 +46,11 @@ kotlin {
 
 compose.desktop {
     application {
-        mainClass = "org.example.finance.MainKt"
+        mainClass = "io.finance.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "org.example.finance"
+            packageName = "io.finance"
             packageVersion = "1.0.0"
         }
     }

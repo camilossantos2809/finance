@@ -1,4 +1,4 @@
-package org.example.finance
+package io.example.finance
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
