@@ -1,4 +1,4 @@
-package io.finance.screens.operation
+package io.finance.ui.operation
 
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
@@ -7,11 +7,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.datetime.toKotlinLocalDate
-import io.finance.OperationForm
-import io.finance.screens.RadioButtonItem
-import io.finance.screens.SharedState
-import io.finance.services.database.Operation
-import io.finance.services.database.OperationType
+import io.finance.ui.navigation.OperationForm
+import io.finance.ui.RadioButtonItem
+import io.finance.ui.SharedState
+import io.finance.data.database.Operation
+import io.finance.data.database.OperationType
 import org.jetbrains.exposed.v1.core.SortOrder
 import org.jetbrains.exposed.v1.core.StdOutSqlLogger
 import org.jetbrains.exposed.v1.jdbc.insert

@@ -1,8 +1,8 @@
-package io.finance.repository.impl
+package io.finance.data.repository.impl
 
-import io.finance.repository.WalletRepository
-import io.finance.screens.wallet.CompanyListItem
-import io.finance.services.database.Company
+import io.finance.data.repository.WalletRepository
+import io.finance.ui.wallet.CompanyListItem
+import io.finance.data.database.Company
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction

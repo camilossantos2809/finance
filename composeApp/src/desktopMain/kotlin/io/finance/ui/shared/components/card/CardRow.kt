@@ -1,4 +1,4 @@
-package io.finance.components.card
+package io.finance.ui.shared.components.card
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

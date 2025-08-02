@@ -1,7 +1,7 @@
-package io.finance.screens.wallet
+package io.finance.ui.wallet
 
 import androidx.lifecycle.ViewModel
-import io.finance.repository.WalletRepository
+import io.finance.data.repository.WalletRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 
 data class CompanyListItem(val id: Int, val name: String)

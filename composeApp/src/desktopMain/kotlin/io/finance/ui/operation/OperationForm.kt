@@ -1,4 +1,4 @@
-package io.finance.screens.operation
+package io.finance.ui.operation
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
@@ -13,9 +13,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import io.finance.LocalNavController
-import io.finance.screens.RadioButtonItem
-import io.finance.screens.SharedState
+import io.finance.ui.navigation.LocalNavController
+import io.finance.ui.RadioButtonItem
+import io.finance.ui.SharedState
 
 @Composable
 fun OperationFormView() {

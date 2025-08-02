@@ -1,14 +1,14 @@
-package io.finance.screens.home
+package io.finance.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.MutableStateFlow
-import io.finance.OperationsList
-import io.finance.WalletList
-import io.finance.screens.SharedState
+import io.finance.ui.navigation.OperationsList
+import io.finance.ui.navigation.WalletList
+import io.finance.ui.SharedState
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
-import io.finance.services.database.Wallet
+import io.finance.data.database.Wallet
 import org.jetbrains.exposed.v1.core.ResultRow
 
 data class WalletListItem(val id: Int, val description: String)

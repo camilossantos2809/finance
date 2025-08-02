@@ -1,4 +1,4 @@
-package io.finance.services.database
+package io.finance.data.database
 
 import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 import org.jetbrains.exposed.v1.datetime.date

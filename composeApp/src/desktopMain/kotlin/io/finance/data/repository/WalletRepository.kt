@@ -1,6 +1,6 @@
-package io.finance.repository
+package io.finance.data.repository
 
-import io.finance.screens.wallet.CompanyListItem
+import io.finance.ui.wallet.CompanyListItem
 import kotlinx.coroutines.flow.MutableStateFlow
 
 interface WalletRepository {

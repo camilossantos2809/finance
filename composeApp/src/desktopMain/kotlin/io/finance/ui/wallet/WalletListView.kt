@@ -1,4 +1,4 @@
-package io.finance.screens.wallet
+package io.finance.ui.wallet
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,10 +21,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.finance.LocalNavController
-import io.finance.components.card.CardRow
-import io.finance.repository.WalletRepository
-import io.finance.repository.impl.WalletRepositoryImpl
+import io.finance.ui.navigation.LocalNavController
+import io.finance.ui.shared.components.card.CardRow
+import io.finance.data.repository.WalletRepository
+import io.finance.data.repository.impl.WalletRepositoryImpl
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
