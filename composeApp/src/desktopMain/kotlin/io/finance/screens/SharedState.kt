@@ -19,7 +19,6 @@ object SharedState {
     var companySearch by mutableStateOf(TextFieldValue(""))
     var selectedStock by mutableStateOf<SelectedStock?>(null)
     val operationTypes = MutableStateFlow<List<RadioButtonItem>>(emptyList())
-    var selectedWallet by mutableStateOf<Int?>(null)
 
     fun getStock(stockCode: String): SelectedStock? {
         return transaction {
@@ -47,7 +46,4 @@ object SharedState {
         return selectedStock
     }
 
-    fun selectWallet(id: Int) {
-        selectedWallet = id
-    }
 }

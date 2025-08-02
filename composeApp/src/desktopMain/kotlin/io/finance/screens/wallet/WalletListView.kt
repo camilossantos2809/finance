@@ -25,15 +25,16 @@ import io.finance.LocalNavController
 import io.finance.components.card.CardRow
 import io.finance.repository.WalletRepository
 import io.finance.repository.impl.WalletRepositoryImpl
-import io.finance.screens.SharedState
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
-fun WalletListView(walletRepository: WalletRepository = WalletRepositoryImpl()
+fun WalletListView(
+    walletId: Int,
+    walletRepository: WalletRepository = WalletRepositoryImpl()
 ) {
     val navController = LocalNavController.current
-    val viewModel = remember { WalletViewModel(walletRepository) }
+    val viewModel = remember { WalletViewModel(walletRepository, walletId) }
     val companies by viewModel.companies.collectAsState()
 
     Column(
@@ -46,7 +47,9 @@ fun WalletListView(walletRepository: WalletRepository = WalletRepositoryImpl()
                 Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
             }
         }
-        Text(text = SharedState.selectedWallet.toString())
+
+        // Adicionar dados da wallet
+
         LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             items(companies) { item ->
                 CardRow(onClick = {}) {

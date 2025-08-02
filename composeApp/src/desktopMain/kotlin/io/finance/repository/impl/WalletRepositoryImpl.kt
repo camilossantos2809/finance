@@ -1,7 +1,6 @@
 package io.finance.repository.impl
 
 import io.finance.repository.WalletRepository
-import io.finance.screens.SharedState
 import io.finance.screens.wallet.CompanyListItem
 import io.finance.services.database.Company
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +12,7 @@ class WalletRepositoryImpl : WalletRepository {
         val stateFlow = MutableStateFlow<List<CompanyListItem>>(emptyList())
         val companies = transaction {
             Company.selectAll().where {
-                Company.walletId eq SharedState.selectedWallet
+                Company.walletId eq walletId
             }.map { CompanyListItem(it[Company.id].value, it[Company.description]) }
         }
         stateFlow.value = companies

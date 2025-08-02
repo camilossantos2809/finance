@@ -38,8 +38,7 @@ class HomeViewModel : ViewModel() {
     }
 
     fun onPressWallet(walletId: Int, navController: NavController) {
-        SharedState.selectWallet(walletId)
-        navController.navigate(WalletList)
+        navController.navigate(WalletList(walletId))
     }
 
 }
