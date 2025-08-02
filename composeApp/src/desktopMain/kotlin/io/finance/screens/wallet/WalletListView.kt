@@ -23,14 +23,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.finance.LocalNavController
 import io.finance.components.card.CardRow
+import io.finance.repository.WalletRepository
+import io.finance.repository.impl.WalletRepositoryImpl
 import io.finance.screens.SharedState
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
-fun WalletListView() {
+fun WalletListView(walletRepository: WalletRepository = WalletRepositoryImpl()
+) {
     val navController = LocalNavController.current
-    val viewModel = remember { WalletViewModel() }
+    val viewModel = remember { WalletViewModel(walletRepository) }
     val companies by viewModel.companies.collectAsState()
 
     Column(

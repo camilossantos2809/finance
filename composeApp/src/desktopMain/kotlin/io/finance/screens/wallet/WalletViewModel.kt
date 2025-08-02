@@ -1,24 +1,14 @@
 package io.finance.screens.wallet
 
 import androidx.lifecycle.ViewModel
+import io.finance.repository.WalletRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import io.finance.screens.SharedState
-import io.finance.services.database.Company
-import org.jetbrains.exposed.v1.jdbc.selectAll
-import org.jetbrains.exposed.v1.jdbc.transactions.transaction
-import kotlin.collections.emptyList
 
 data class CompanyListItem(val id: Int, val name: String)
 
-class WalletViewModel : ViewModel() {
-    val companies = MutableStateFlow(emptyList<CompanyListItem>().toMutableList())
+class WalletViewModel(private val repository: WalletRepository,
+) : ViewModel() {
+    val companies = repository.getCompaniesByWallet(SharedState.selectedWallet?:0)
     val errorMessage = MutableStateFlow<String?>("")
-
-    init {
-        transaction {
-            Company.selectAll().where {
-                Company.walletId eq SharedState.selectedWallet
-            }.forEach { companies.value.add(CompanyListItem(it[Company.id].value, it[Company.description])) }
-        }
-    }
 }
