@@ -3,6 +3,7 @@ package org.example.finance.services.database
 import org.jetbrains.exposed.v1.core.dao.id.IntIdTable
 import org.jetbrains.exposed.v1.datetime.date
 import org.jetbrains.exposed.v1.datetime.timestamp
+import kotlin.time.ExperimentalTime
 
 const val MAX_VARCHAR_LENGTH = 100
 
@@ -30,6 +31,7 @@ object Operation: IntIdTable(){
     val stockId = reference("stock_id", Stock)
     val typeId = reference("type_id", OperationType)
     val date = date("date")
+    @OptIn(ExperimentalTime::class)
     val createdAt = timestamp("created_at")
     val amount = decimal("amount_quotes", 15, 5)
     val priceUnit = decimal("price_unit", 15, 5)

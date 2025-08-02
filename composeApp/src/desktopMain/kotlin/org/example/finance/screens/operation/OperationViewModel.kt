@@ -14,7 +14,6 @@ import org.example.finance.services.database.Operation
 import org.example.finance.services.database.OperationType
 import org.jetbrains.exposed.v1.core.SortOrder
 import org.jetbrains.exposed.v1.core.StdOutSqlLogger
-import org.jetbrains.exposed.v1.jdbc.addLogger
 import org.jetbrains.exposed.v1.jdbc.insert
 import org.jetbrains.exposed.v1.jdbc.selectAll
 import org.jetbrains.exposed.v1.jdbc.transactions.transaction
