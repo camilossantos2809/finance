@@ -1,29 +1,35 @@
 package io.finance.ui.home
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
-import kotlinx.coroutines.flow.MutableStateFlow
+import io.finance.data.model.WalletListItem
+import io.finance.data.repository.WalletRepository
+import io.finance.ui.SharedState
 import io.finance.ui.navigation.OperationsList
 import io.finance.ui.navigation.WalletList
-import io.finance.ui.SharedState
-import org.jetbrains.exposed.v1.jdbc.selectAll
-import org.jetbrains.exposed.v1.jdbc.transactions.transaction
-import io.finance.data.database.Wallet
-import org.jetbrains.exposed.v1.core.ResultRow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
-data class WalletListItem(val id: Int, val description: String)
 
-fun ResultRow.toWalletListItem() = WalletListItem(
-    id = this[Wallet.id].value, description = this[Wallet.description]
-)
+class HomeViewModel(private val repository: WalletRepository) : ViewModel() {
+    private val _wallets = MutableStateFlow<List<WalletListItem>>(emptyList())
+    val wallets: StateFlow<List<WalletListItem>> = _wallets
 
-class HomeViewModel : ViewModel() {
-    val wallets = MutableStateFlow(emptyList<WalletListItem>().toMutableList())
     val errorMessage = MutableStateFlow<String?>("")
 
     init {
-        transaction {
-            Wallet.selectAll().forEach { wallets.value.add(it.toWalletListItem()) }
+        loadWallets()
+    }
+
+    private fun loadWallets(){
+        viewModelScope.launch {
+            try {
+                _wallets.value = repository.getAll()
+            } catch (e: Exception) {
+                errorMessage.value = "${e.message}"
+            }
         }
     }
 

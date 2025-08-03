@@ -1,8 +1,9 @@
 package io.finance.data.repository
 
-import io.finance.ui.wallet.CompanyListItem
-import kotlinx.coroutines.flow.MutableStateFlow
+import io.finance.data.model.CompanyListItem
+import io.finance.data.model.WalletListItem
 
 interface WalletRepository {
-    fun getCompaniesByWallet(walletId: Int): MutableStateFlow<List<CompanyListItem>>
+    suspend fun getCompaniesByWallet(walletId: Int): List<CompanyListItem>
+    suspend fun getAll(): List<WalletListItem>
 }
