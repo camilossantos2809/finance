@@ -1,13 +1,9 @@
 package io.finance.ui.home
 
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,8 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import io.finance.ui.navigation.LocalNavController
 import io.finance.ui.SharedState
+import io.finance.ui.navigation.LocalNavController
+import io.finance.ui.shared.components.card.CardRow
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 
@@ -57,7 +54,7 @@ fun HomeView() {
         Text("Wallets", style = MaterialTheme.typography.titleLarge)
         LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             items(wallets) { item ->
-                Card(onClick = { viewModel.onPressWallet(item.id, navController) }) {
+                CardRow(onClick = { viewModel.onPressWallet(item.id, navController) }) {
                     Text(item.description, style = MaterialTheme.typography.titleMedium)
                 }
             }
@@ -65,13 +62,3 @@ fun HomeView() {
     }
 }
 
-@Composable
-fun Card(onClick: () -> Unit, content: @Composable () -> Unit) {
-    Column(
-        modifier = Modifier.width(IntrinsicSize.Max).clickable(onClick = onClick)
-            .border(width = 1.dp, color = Color.DarkGray, shape = RoundedCornerShape(8.dp))
-            .background(color = Color.White, shape = RoundedCornerShape(8.dp)).padding(16.dp),
-    ) {
-        content()
-    }
-}

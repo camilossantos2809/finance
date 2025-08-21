@@ -66,7 +66,7 @@ fun OperationListView() {
         }
         LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
             items(operations) { item ->
-                CardRow(onClick = { navController.navigate(WalletList) }) {
+                CardRow(onClick = { navController.navigate(WalletList) }, modifier = Modifier.fillMaxWidth()) {
                     Text(item.id.toString(), style = MaterialTheme.typography.bodyMedium)
                     Text(item.date.toString(), style = MaterialTheme.typography.bodyMedium)
                     Text(item.type, style = MaterialTheme.typography.bodyMedium)
