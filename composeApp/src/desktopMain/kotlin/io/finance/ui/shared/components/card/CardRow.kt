@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 fun CardRow(onClick: () -> Unit, modifier: Modifier = Modifier, content: @Composable () -> Unit) {
     ElevatedCard(
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            containerColor = MaterialTheme.colorScheme.secondary,
         ),
         modifier = modifier.size(width = 240.dp, height = 100.dp).clickable(onClick = onClick),
     ) {

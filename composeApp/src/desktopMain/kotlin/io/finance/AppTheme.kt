@@ -25,15 +25,19 @@ fun AppTheme(
 ) {
     val colors = if (darkTheme) {
         darkColorScheme(
-            primary = Color(0xFFBB86FC),
-            secondary = Color(0xFF03DAC5),
-            tertiary = Color(0xFF3700B3)
+            primary = Color(0xFF23260F),
+            secondary = Color(0xFF607EA6),
+            tertiary = Color(0xFF2D7B6D),
+            onPrimary =Color(0xFFF2EFDF),
+            onSecondary = Color(0xFF23260F),
         )
     } else {
         lightColorScheme(
-            primary = Color(0xFF6200EE),
-            secondary = Color(0xFF03DAC5),
-            tertiary = Color(0xFF3700B3)
+            primary = Color(0xFF01261F),
+            secondary = Color(0xFFA69458),
+            tertiary = Color(0xFF2D7B6D),
+            onPrimary = Color(0xFF2D7B6D),
+            onSecondary = Color(0xFF23260F),
         )
     }
     val typography = Typography(
