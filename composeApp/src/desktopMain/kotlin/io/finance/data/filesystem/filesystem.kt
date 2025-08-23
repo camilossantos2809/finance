@@ -10,4 +10,8 @@ object FileHelper {
             generateSequence { readUtf8Line()?.split(",") }.toList()
         }
     }
+
+    fun readLines(path: String): List<String> = FileSystem.SYSTEM.read(path.toPath()) {
+        generateSequence { readUtf8Line() }.toList()
+    }
 }

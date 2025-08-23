@@ -31,11 +31,9 @@ fun ImportView() {
             Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
         }
         Text("Import", style = MaterialTheme.typography.headlineMedium)
-        Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = { viewModel.openFileDialog() }) {
-            Text("Select CSV File")
+            Text("Import stock codes")
         }
-        Spacer(modifier = Modifier.height(16.dp))
         selectedFilePath?.let { path ->
             Text("Selected file: $path", style = MaterialTheme.typography.bodyMedium)
             Spacer(modifier = Modifier.height(16.dp))

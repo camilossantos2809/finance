@@ -60,7 +60,8 @@ fun AppTheme(
             fontFamily = fontFamily,
             fontWeight = FontWeight.Bold,
             fontSize = 18.sp
-        )
+        ),
+        headlineMedium = MaterialTheme.typography.headlineMedium.copy(fontFamily = fontFamily),
     )
     val shapes = Shapes(
         small = RoundedCornerShape(4.dp),
