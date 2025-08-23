@@ -14,6 +14,7 @@ import io.finance.ui.home.HomeView
 import io.finance.ui.operation.OperationFormView
 import io.finance.ui.operation.OperationListView
 import io.finance.ui.wallet.WalletListView
+import io.finance.ui.import.ImportView
 
 @Serializable
 object Home
@@ -29,6 +30,9 @@ object OperationsList
 
 @Serializable
 object OperationForm
+
+@Serializable
+object ImportView
 
 val LocalNavController = compositionLocalOf<NavController> {
     error("No NavController provided")
@@ -47,6 +51,7 @@ fun NavigationRoutes() {
             composable<CompanyList> { CompanyListView() }
             composable<OperationsList> { OperationListView() }
             composable<OperationForm> { OperationFormView() }
+            composable<ImportView> { ImportView() }
         }
     }
 }

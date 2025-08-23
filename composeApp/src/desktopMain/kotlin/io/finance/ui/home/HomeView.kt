@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import io.finance.ui.SharedState
+import io.finance.ui.navigation.ImportView
 import io.finance.ui.navigation.LocalNavController
 import io.finance.ui.shared.components.card.CardRow
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -49,6 +50,9 @@ fun HomeView() {
                 supportingText = { Text(errorMessage ?: "", style = TextStyle(color = Color.Red)) })
             Button(onClick = { viewModel.onPressSearch(navController) }) {
                 Text("Search")
+            }
+            Button(onClick = { navController.navigate(ImportView) }) {
+                Text("Importar")
             }
         }
         Text("Wallets", style = MaterialTheme.typography.titleLarge)
