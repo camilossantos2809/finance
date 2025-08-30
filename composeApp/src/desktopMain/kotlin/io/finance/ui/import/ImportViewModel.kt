@@ -19,10 +19,12 @@ class ImportViewModel(
     val stockRepository: StockRepository,
     val companyRepository: CompanyRepository
 ) : ViewModel() {
-    private val _selectedFilePath = MutableStateFlow<String?>(null)
-    val selectedFilePath: StateFlow<String?> = _selectedFilePath.asStateFlow()
+    private val _statusStock = MutableStateFlow<String?>(null)
+    val statusStock: StateFlow<String?> = _statusStock.asStateFlow()
+    private val _statusOperations = MutableStateFlow<String?>(null)
+    val statusOperations: StateFlow<String?> = _statusOperations.asStateFlow()
 
-    fun openFileDialog() {
+    private fun openFileDialog(onFileOpen: (String) -> Unit) {
         val fileDialog = FileDialog(null as Frame?, "Select CSV File", FileDialog.LOAD)
         fileDialog.setFile("*.csv")
         fileDialog.isVisible = true
@@ -31,10 +33,19 @@ class ImportViewModel(
         val selectedDir = fileDialog.directory
 
         if (selectedFile != null && selectedDir != null) {
-            _selectedFilePath.value = File(selectedDir, selectedFile).absolutePath
+            val selectedFilePath = MutableStateFlow<String?>(null)
+            selectedFilePath.value = File(selectedDir, selectedFile).absolutePath
+            onFileOpen(selectedFilePath.value!!)
+        }
+    }
+
+    fun importStocks() {
+        openFileDialog {
             viewModelScope.launch {
-                val textValues = importRepository.readCSVCalculo(_selectedFilePath.value!!)
+                _statusStock.value = "Loading CSV file..."
+                val textValues = importRepository.readCSVCalculo(it)
                 val stockMap = companyRepository.getStockIdMapByCodes(textValues)
+                _statusStock.value = "Inserting data..."
                 stockRepository.insertStocks(textValues.map { textLine ->
                     val stockId = stockMap[textLine]
                     if (stockId == null) {
@@ -46,14 +57,21 @@ class ImportViewModel(
                         companyId = stockId
                     )
                 })
-                println("OK!")
+                _statusStock.value = "Success"
             }
+        }
+    }
 
+    fun importOperations() {
+        openFileDialog {
+            viewModelScope.launch {
+                _statusOperations.value = "Loading CSV file..."
+                val textValues = importRepository.readCSVCalculo(it)
+                _statusOperations.value = "Inserting data..."
+                _statusOperations.value = "Success"
+            }
         }
     }
 
 
-    fun clearSelectedFile() {
-        _selectedFilePath.value = null
-    }
 }
