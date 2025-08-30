@@ -25,6 +25,7 @@ object Stock: IntIdTable(){
 
 object OperationType: IntIdTable("operation_type"){
     val description = varchar("description", MAX_VARCHAR_LENGTH)
+    val code = varchar("code", 1, )
 }
 
 object Operation: IntIdTable(){
@@ -37,5 +38,5 @@ object Operation: IntIdTable(){
     val priceUnit = decimal("price_unit", 15, 5)
     val tax = decimal("tax", 15, 5)
     val amountQuotesTotal = decimal("amount_quotes_total", 15, 5)
-    val priceTotal = decimal("price_total", 15, 5)
+    val priceTotal = decimal("price_total", 15, 5).nullable()
 }

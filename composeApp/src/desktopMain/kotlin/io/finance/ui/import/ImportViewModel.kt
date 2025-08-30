@@ -3,8 +3,10 @@ package io.finance.ui.import
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.finance.data.model.InsertStocksData
+import io.finance.data.model.toInsertOperationData
 import io.finance.data.repository.CompanyRepository
 import io.finance.data.repository.ImportRepository
+import io.finance.data.repository.OperationRepository
 import io.finance.data.repository.StockRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,11 +15,13 @@ import kotlinx.coroutines.launch
 import java.awt.FileDialog
 import java.awt.Frame
 import java.io.File
+import kotlin.time.ExperimentalTime
 
 class ImportViewModel(
     val importRepository: ImportRepository,
     val stockRepository: StockRepository,
-    val companyRepository: CompanyRepository
+    val companyRepository: CompanyRepository,
+    val operationRepository: OperationRepository
 ) : ViewModel() {
     private val _statusStock = MutableStateFlow<String?>(null)
     val statusStock: StateFlow<String?> = _statusStock.asStateFlow()
@@ -53,8 +57,7 @@ class ImportViewModel(
                         return@launch
                     }
                     InsertStocksData(
-                        code = textLine,
-                        companyId = stockId
+                        code = textLine, companyId = stockId
                     )
                 })
                 _statusStock.value = "Success"
@@ -62,16 +65,23 @@ class ImportViewModel(
         }
     }
 
+    @OptIn(ExperimentalTime::class)
     fun importOperations() {
-        openFileDialog {
+        openFileDialog { filePath ->
             viewModelScope.launch {
                 _statusOperations.value = "Loading CSV file..."
-                val textValues = importRepository.readCSVCalculo(it)
+                val csvData = importRepository.readCSVNotas(filePath)
+                val stockMap = stockRepository.getStockIdMapByCodes()
+                val opTypeMap = operationRepository.getTypeIdMapByCode()
                 _statusOperations.value = "Inserting data..."
+                operationRepository.insertOperations(csvData.map { csvLine ->
+                    val stockId = requireNotNull(stockMap[csvLine.stockCode]) { "stock can't be null" }
+                    val typeId = requireNotNull(opTypeMap[csvLine.type]) { "type operation can't be null" }
+                    csvLine.toInsertOperationData(stockId, typeId)
+                })
                 _statusOperations.value = "Success"
             }
         }
     }
-
 
 }

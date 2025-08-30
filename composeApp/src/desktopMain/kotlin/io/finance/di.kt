@@ -2,10 +2,12 @@ package io.finance
 
 import io.finance.data.repository.CompanyRepository
 import io.finance.data.repository.ImportRepository
+import io.finance.data.repository.OperationRepository
 import io.finance.data.repository.StockRepository
 import io.finance.data.repository.WalletRepository
 import io.finance.data.repository.impl.CompanyRepositoryImpl
 import io.finance.data.repository.impl.ImportRepositoryImpl
+import io.finance.data.repository.impl.OperationRepositoryImpl
 import io.finance.data.repository.impl.StockRepositoryImpl
 import io.finance.data.repository.impl.WalletRepositoryImpl
 import io.finance.ui.home.HomeViewModel
@@ -19,6 +21,7 @@ val repositoryModule = module {
     single<ImportRepository> { ImportRepositoryImpl() }
     single<StockRepository> { StockRepositoryImpl() }
     single<CompanyRepository> { CompanyRepositoryImpl() }
+    single<OperationRepository> { OperationRepositoryImpl() }
 }
 
 val viewModelModule = module {
@@ -28,7 +31,14 @@ val viewModelModule = module {
         )
     }
     viewModel { HomeViewModel(repository = get()) }
-    viewModel { ImportViewModel(importRepository = get(), stockRepository = get(), companyRepository = get()) }
+    viewModel {
+        ImportViewModel(
+            importRepository = get(),
+            stockRepository = get(),
+            companyRepository = get(),
+            operationRepository = get()
+        )
+    }
 }
 
 val allModules = listOf(repositoryModule, viewModelModule)
