@@ -1,19 +1,21 @@
 package io.finance.data.database
 
-import org.jetbrains.exposed.v1.jdbc.Database
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import org.jetbrains.exposed.v1.jdbc.Database
 import kotlin.io.path.Path
 import kotlin.io.path.readText
 
 @Serializable
 data class DatabaseConfig(
-    val name: String, val user: String, val password: String
+    val name: String,
+    val user: String,
+    val password: String,
 )
 
 @Serializable
 data class Config(
-    val database: DatabaseConfig
+    val database: DatabaseConfig,
 )
 
 fun getConfig(): Config {
@@ -28,7 +30,6 @@ fun connectDatabase(): Database {
         "jdbc:postgresql://localhost:5432/${config.database.name}",
         driver = "org.postgresql.Driver",
         user = config.database.user,
-        password = config.database.password
+        password = config.database.password,
     )
 }
-
