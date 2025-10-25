@@ -105,18 +105,18 @@ class OperationViewModel : ViewModel() {
                 _formData.value.amount
                     .replace(",", ".")
                     .toBigDecimal()
-            if (amountQuotes <= BigDecimal.ZERO) {
-                throw IllegalArgumentException("Amount must be greater than zero.")
-            }
+
+            require(amountQuotes <= BigDecimal.ZERO) { "Amount must be greater than zero." }
+
             val priceUnit =
                 _formData.value.price
                     .replace(",", ".")
                     .toBigDecimal()
-            if (priceUnit <= BigDecimal.ZERO) {
-                throw IllegalArgumentException("Price must be greater than zero.")
+            require(priceUnit <= BigDecimal.ZERO) {
+                "Price must be greater than zero."
             }
-            val parsedDate = parseDateInput(_formData.value.date.text) ?: throw IllegalStateException("Invalid date")
-            val stock = SharedState.selectedStock?.id ?: throw IllegalStateException("Stock not selected")
+            val parsedDate = checkNotNull(parseDateInput(_formData.value.date.text)) { "Invalid date" }
+            val stock = checkNotNull(SharedState.selectedStock?.id) { "Stock not selected" }
 
             transaction {
                 Operation.insert {
